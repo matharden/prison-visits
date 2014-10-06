@@ -149,6 +149,7 @@
         event.preventDefault();
       } else {
         ui.item.option.selected = true;
+        $(this).data('select').trigger('change');
       }
     },
 

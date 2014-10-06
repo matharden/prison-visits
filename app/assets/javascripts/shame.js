@@ -49,8 +49,16 @@ $(function () {
   $('#ad-help').on('click', function () {
     ga('send', 'event', 'external-link', 'ad-help');
   });
+
+
+  // Enable rest of prisoner details once prison chosen
+  $('#prisoner_prison_name').on('change', function() {
+    $('.secondary.hidden').removeClass('hidden');
+  });
+
 });
 
+moj.Modules.devs = {};
 
 moj.are_cookies_enabled = function () {
   var cookieEnabled = (navigator.cookieEnabled) ? true : false;
