@@ -1,8 +1,12 @@
+require 'api_helper'
+
 class VisitController < ApplicationController
   before_filter :check_if_cookies_enabled, only: [:update_prisoner_details]
   before_filter :check_if_session_timed_out, only: [:update_prisoner_details, :update_visitor_details, :update_choose_date_and_time, :update_check_your_request]
   before_filter :check_if_session_exists, except: [:prisoner_details, :unavailable, :status]
   helper_method :just_testing?
+  helper_method :instant_booking?
+  helper_method :process_as_email?
   helper_method :visit
 
   def check_if_cookies_enabled
@@ -39,17 +43,28 @@ class VisitController < ApplicationController
   end
 
   def update_prisoner_details
-    if (visit.prisoner = Prisoner.new(prisoner_params)).valid?
+    visit.prisoner = Prisoner.new(prisoner_params)
+    session[:process_as_email] = params[:next] == 'Submit a visit request'
+
+    if (visit.prisoner).valid?
+      if instant_booking? && !process_as_email?
+        API_CLIENT.check_prisoner_info(visit.prisoner)
+      end
       redirect_to visitor_details_path
     else
       redirect_to prisoner_details_path
     end
+  rescue APIHelper::ServiceException => e
+    visit.prisoner.errors.add(:api, true)
+    redirect_to prisoner_details_path(attempts: params[:attempts].to_i + 1)
   end
 
   def visitor_details
   end
 
   def update_visitor_details
+    session[:process_as_email] ||= params[:next] == 'Submit a visit request'
+
     if m = params[:next].match(/remove-(\d)/)
       index = m[1].to_i
       visit.visitors.delete_at(index)
@@ -75,8 +90,21 @@ class VisitController < ApplicationController
         redirect_to visitor_details_path, notice: "You may only have a maximum of #{Visit::MAX_VISITORS} visitors"
       end
     else
+      if go_back
+        redirect_to visitor_details_path and return
+      else
+        if (instant_booking? && !process_as_email?)
+          API_CLIENT.get_available_time_slots(visit.prisoner, visit.visitors, Date.today + 4.days, Date.today + 28.days)
+        else
+          redirect_to choose_date_and_time_path and return
+        end
+      end
+
       redirect_to go_back ? visitor_details_path : choose_date_and_time_path
     end
+  rescue APIHelper::ServiceException => e
+    visit.visitors.first.errors.add(:api, true)
+    redirect_to visitor_details_path(attempts: params[:attempts].to_i + 1)
   end
 
   def choose_date_and_time
@@ -170,6 +198,7 @@ class VisitController < ApplicationController
       end
       params[:prisoner][:date_of_birth] = Date.new(*date_of_birth.reverse)
     end
+    @attempts = params.permit(:attempts)
     trim_whitespace_from_values(params.require(:prisoner).permit(:first_name, :last_name, :date_of_birth, :number, :prison_name))
   rescue ArgumentError
     trim_whitespace_from_values(params.require(:prisoner).permit(:first_name, :last_name, :number, :prison_name))
@@ -219,5 +248,13 @@ class VisitController < ApplicationController
     else
       p
     end
+  end
+
+  def instant_booking?
+    Rails.configuration.prison_data[visit.prisoner.prison_name]['instant_booking']
+  end
+
+  def process_as_email?
+    session[:process_as_email]
   end
 end

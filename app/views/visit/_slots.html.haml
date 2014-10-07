@@ -1,0 +1,15 @@
+
+.SlotPicker-timeSlots
+  %ul.SlotPicker-days
+    %li.SlotPicker-day.SlotPicker-day--past
+      %h2.SlotPicker-dayTitle
+      %p It is not possible to book a visit in the past.
+    %li.SlotPicker-day.SlotPicker-day--unavailable
+      %h2.SlotPicker-dayTitle
+      %p It is not possible to book a visit on this day.
+    %li.SlotPicker-day.SlotPicker-day--beyond
+      %h2.SlotPicker-dayTitle
+      %p You can only book a visit in the next {{ daysInRange }} days.
+    %li.SlotPicker-day.SlotPicker-day--leadtime
+      %h2.SlotPicker-dayTitle
+      %p You can only book a visit 3 working days in advance.

@@ -1,5 +1,7 @@
 Rochester:
   enabled: true
+  instant_booking: true
+  nomis_code: RCI
   phone: 01634 803100
   email: pvb.rochester@maildrop.dsd.io
   address:
@@ -32,6 +34,8 @@ Rochester:
       - 1400-1600
 Durham:
   enabled: true
+  instant_booking: true
+  nomis_code: DMI
   phone: 0191 3323417
   email: pvb.durham@maildrop.dsd.io
   address:
@@ -1425,6 +1429,8 @@ Isle of Wight - Parkhurst:
       - 1400-1600
 Leeds:
   enabled: true
+  instant_booking: true
+  nomis_code: LEI
   phone: '0113 203 2995'
   email: pvb.leeds@maildrop.dsd.io
   address:

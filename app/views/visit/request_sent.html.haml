@@ -1,35 +1,41 @@
-- content_for :header, 'Your request is being processed'
+- content_for :header, (instant_booking? && !process_as_email? ? 'Your visit has been booked' : 'Your request is being processed')
 
-.Grid
-  .Grid-2-3
-    %p 
-      %strong Your visit is not booked yet:
-      you'll get an email to 
-      = mail_to visit.visitors.first.email
-      by
-      = when_to_expect_reply
-      to confirm the date and time of your visit. 
-      If you don't get a confirmation email, please
-      = conditional_text prison_phone, 'call ', ' or'
-      email us at #{prison_email_link}.
+- unless instant_booking? && !process_as_email?
+  .Grid
+    .Grid-2-3
+      %p 
+        %strong Your visit is not booked yet:
+        you'll get an email to 
+        = mail_to visit.visitors.first.email
+        by
+        = when_to_expect_reply
+        to confirm the date and time of your visit. 
+        If you don't get a confirmation email, please
+        = conditional_text prison_phone, 'call ', ' or'
+        email us at #{prison_email_link}.
 
 
 .Grid
   .Grid-2-3
     %dl
-      %dt Your visit
+      %dt= instant_booking? && !process_as_email? ? 'Chosen visit time' : 'Your visit'
       %dd
-        %ul.unstyled-list.visit-times
-          - visit.slots.each_with_index do |slot, index|
-            - if slot.date.present?
-              %li
-                - if index == 0
-                  First choice:
-                - else
-                  Alternative #{index}:
-                %strong= format_day slot.date
-                \ -
-                = display_slot_and_duration slot.times
+        - if instant_booking? && !process_as_email?
+          %strong.h3(style="font-weight:bold")= format_day visit.slots.first.date
+          \ -
+          = display_slot_and_duration visit.slots.first.times
+        - else
+          %ul.unstyled-list.visit-times
+            - visit.slots.each_with_index do |slot, index|
+              - if slot.date.present?
+                %li
+                  - if index == 0
+                    First choice:
+                  - else
+                    Alternative #{index}:
+                  %strong= format_day slot.date
+                  \ -
+                  = display_slot_and_duration slot.times
 
 
 .Grid(style="margin-top:1em")

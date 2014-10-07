@@ -144,3 +144,36 @@ article th {
 }
 /* end hide live phase */
 
+
+/* hack */
+.disabled {
+  label,
+  input,
+  p,
+  h2,
+  legend,
+  .form-hint,
+  ::-webkit-input-placeholder {
+    color: $grey-8;
+    border-color: $grey-8;
+  }
+}
+.flow-note {
+  margin-bottom: 1em;
+  padding: 10px;
+  background: #d5e8f3;
+
+  :first-child {
+    margin-top: 0;
+  }
+  :last-child {
+    margin-bottom: 0;
+  }
+}
+[for=continue_as_email] {
+  display: none;
+}
+.secondary {
+  margin-top: 2em;
+}
+/* end hack */

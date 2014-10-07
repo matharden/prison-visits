@@ -2,79 +2,48 @@
 
 = render 'slotpicker_templates'
 
-%p.visible--js-enabled Pick the day you want to visit from the calendar.
+- if instant_booking? && process_as_email?
+  #instant-booking.flow-note
+    %p Your visit request will be sent to visit booking staff to process manually.
 
 - if visit.slots.any? {|s| s.errors.any?}
   #error-summary.validation-summary.group(role="alert" tabindex="-1" aria-labelledby="error-heading")
     %h2#error-heading You need to fix the errors on this page before continuing.
     %p You need to select a date and time for your visit.
 
+.SlotPicker{ :'data-option-limit' => (instant_booking? && !process_as_email?) ? '1' : '3' }
 
-.SlotPicker
+  - if instant_booking? && !process_as_email?
 
-  .right-column.visible--js-enabled
+    .right-column.visible--js-enabled
 
-    .BookingCalendar.hidden--mobile
-      .BookingCalendar-header
-        %a.BookingCalendar-nav.BookingCalendar-nav--prev{href: "#"}
-        %strong.BookingCalendar-currentMonth
-        %a.BookingCalendar-nav.BookingCalendar-nav--next{href: "#"}
+      = render 'slots'
 
-      %table.BookingCalendar-dates
-        %thead
-          %tr
-            %th Mon
-            %th Tue
-            %th Wed
-            %th Thu
-            %th Fri
-            %th Sat
-            %th Sun
+      = render 'choices', hide: true
 
-      .BookingCalendar-mask
-        %table.BookingCalendar-dates
-          %tbody.BookingCalendar-datesBody
+    .left-column
 
-    .DateSlider.visible--mobile(data-selectonload="true")
-      .DateSlider-month
-      .DateSlider-sliders
-        %a.DateSlider-button.DateSlider-buttonLeft{href: "#"} ❮
-        %a.DateSlider-button.DateSlider-buttonRight{href: "#"} ❯
-        .DateSlider-smallDates.scroll
-          %ol.DateSlider-days
-        .DateSlider-touch.scroll
-          %ol.DateSlider-days
-        .DateSlider-portalFrame
-        .DateSlider-largeDates.scroll
-          %ol.DateSlider-days
+      = render 'calendar'
 
-    %ul.BookingCalendar-legend
-      %li
-        .BookingCalendar-legendBox.BookingCalendar-legendBox--available
-        %p.BookingCalendar-legendDesc Visit days
-      %li
-        .BookingCalendar-legendBox.BookingCalendar-legendBox--unavailable
-        %p.BookingCalendar-legendDesc Non-visit days
+      = render 'dateslider'
 
-    .SlotPicker-timeSlots
-      %ul.SlotPicker-days
-        %li.SlotPicker-day.SlotPicker-day--past
-          %h2.SlotPicker-dayTitle
-          %p It is not possible to book a visit in the past.
-        %li.SlotPicker-day.SlotPicker-day--unavailable
-          %h2.SlotPicker-dayTitle
-          %p It is not possible to book a visit on this day.
-        %li.SlotPicker-day.SlotPicker-day--beyond
-          %h2.SlotPicker-dayTitle
-          %p You can only book a visit in the next {{ daysInRange }} days.
-        %li.SlotPicker-day.SlotPicker-day--leadtime
-          %h2.SlotPicker-dayTitle
-          %p You can only book a visit 3 working days in advance.
+      = render 'legend'
 
-  .left-column
+  - else
 
-    .SlotPicker-choices.visible--js-enabled
-      %p.SlotPicker-promoteHelp Use the arrows to put your visit choices in the order that suits you best.
+    .right-column.visible--js-enabled
+
+      = render 'calendar'
+
+      = render 'dateslider'
+
+      = render 'legend'
+
+      = render 'slots'
+
+    .left-column
+
+      = render 'choices', hide: false
 
 
   = form_for visit, url: update_choose_date_and_time_path, :html => { :class => 'slot-form' } do |f|

@@ -50,10 +50,14 @@ $(function () {
     ga('send', 'event', 'external-link', 'ad-help');
   });
 
-
+  
   // Enable rest of prisoner details once prison chosen
   $('#prisoner_prison_name').on('change', function() {
     $('.secondary.hidden').removeClass('hidden');
+    $('#instant-booking').load('prisoner-details #instant-booking', {
+      'prisoner[prison_name]': $('#prisoner_prison_name').val(),
+      'authenticity_token': $('input[name=authenticity_token]').val()
+    });
   });
 
 });
