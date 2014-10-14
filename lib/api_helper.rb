@@ -18,8 +18,8 @@ class APIHelper
       m = {}.tap do |m|
         m.merge!(prisonerInfo: prisoner_hash(prisoner)) if prisoner
         m.merge!(visitors: visitors.map { |v| visitor_hash(v) }) if visitors && visitors.any?
-        m.merge!(startDate: start_date) if start_date
-        m.merge!(endDate: end_date) if end_date
+        m.merge!(startDate: format_date(start_date)) if start_date
+        m.merge!(endDate: format_date(end_date)) if end_date
       end
 
       @client.call(:get_available_time_slots, message: m)
@@ -55,9 +55,9 @@ class APIHelper
     {
       forename: prisoner.first_name,
       surname: prisoner.last_name,
+      dateOfBirth: format_date(prisoner.date_of_birth),
       number: prisoner.number,
       prisonId: Rails.configuration.prison_data[prisoner.prison_name]['nomis_code'],
-      dateOfBirth: prisoner.date_of_birth
     }
   end
 
@@ -65,7 +65,7 @@ class APIHelper
     {
       forename: visitor.first_name,
       surname: visitor.last_name,
-      dateOfBirth: visitor.date_of_birth
+      dateOfBirth: format_date(visitor.date_of_birth)
     }
   end
 
@@ -74,6 +74,10 @@ class APIHelper
       startTime: ts.start_time,
       endTime: ts.end_time
     }
+  end
+
+  def format_date(date)
+    date.to_time.iso8601
   end
 
   class ServiceException < StandardError; end
