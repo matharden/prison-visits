@@ -57,15 +57,15 @@ class APIHelper
       surname: prisoner.last_name,
       dateOfBirth: format_date(prisoner.date_of_birth),
       number: prisoner.number,
-      prisonId: Rails.configuration.prison_data[prisoner.prison_name]['nomis_code'],
+      prisonId: Rails.configuration.prison_data[prisoner.prison_name]['nomis_code']
     }
   end
 
   def visitor_hash(visitor)
     {
+      dateOfBirth: format_date(visitor.date_of_birth),
       forename: visitor.first_name,
-      surname: visitor.last_name,
-      dateOfBirth: format_date(visitor.date_of_birth)
+      surname: visitor.last_name
     }
   end
 
