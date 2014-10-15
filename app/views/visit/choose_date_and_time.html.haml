@@ -55,12 +55,23 @@
           .group
             %label Option #{index+1}
 
-            %select.SlotPicker-input(name='visit[slots][][slot]')
-              %option(value='') none
-              - Schedule.new(prison_data).dates(Date.today).each do |date|
-                - slots_for_day(date).each do |slot|
-                  - value = [date.strftime('%Y-%m-%d'), slot.join('-')].join('-')
-                  %option{ value: value, selected: ('selected' if value == current_slots[index]) }= date.strftime('%A, %e %B - ') + Time.strptime(slot[0].to_s, '%H%M').strftime('%l:%M%P')
+            - if instant_booking? && !process_as_email?
+
+              %select.SlotPicker-input(name='visit[slots][][slot]')
+                %option(value='') none
+                - if @available_slots
+                  - @available_slots.each do |slot|
+                    - value = slot_value slot
+                    %option{ value: value, selected: ('selected' if value == current_slots[index]) }= slot[:start_time].strftime('%A, %e %B - ') + slot[:start_time].strftime('%l:%M%P')
+
+            - else
+
+              %select.SlotPicker-input(name='visit[slots][][slot]')
+                %option(value='') none
+                - Schedule.new(prison_data).dates(Date.today).each do |date|
+                  - slots_for_day(date).each do |slot|
+                    - value = [date.strftime('%Y-%m-%d'), slot.join('-')].join('-')
+                    %option{ value: value, selected: ('selected' if value == current_slots[index]) }= date.strftime('%A, %e %B - ') + Time.strptime(slot[0].to_s, '%H%M').strftime('%l:%M%P')
 
     .actions
       .primary-actions

@@ -82,4 +82,9 @@ module VisitHelper
     schedule = Schedule.new(prison_data)
     format_day(schedule.except_lead_days(today, schedule.default_booking_range(today)).first)
   end
+
+  def slot_value(slot)
+    start, _end = slot[:start_time], slot[:end_time]
+    [start.strftime("%Y-%m-%d-%H%M"), _end.strftime("%H%M")].join('-')
+  end
 end

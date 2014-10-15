@@ -93,7 +93,7 @@ class VisitController < ApplicationController
       if go_back
         redirect_to visitor_details_path and return
       else
-        if (instant_booking? && !process_as_email?)
+        if instant_booking? && !process_as_email?
           API_CLIENT.get_available_time_slots(visit.prisoner, visit.visitors, Date.today + 4.days, Date.today + 28.days)
         else
           redirect_to choose_date_and_time_path and return
@@ -108,26 +108,43 @@ class VisitController < ApplicationController
   end
 
   def choose_date_and_time
-    @slots = visit.slots.empty? ? [Slot.new, Slot.new, Slot.new] : visit.slots
+    if instant_booking? && !process_as_email?
+      @available_slots = API_CLIENT.get_available_time_slots(visit.prisoner, visit.visitors, Date.today + 4.days, Date.today + 28.days)
+      @slots = visit.slots.empty? ? [Slot.new] : visit.slots
+    else
+      @slots = visit.slots.empty? ? [Slot.new, Slot.new, Slot.new] : visit.slots
+    end
   end
 
   def update_choose_date_and_time
-    visit.slots = []
-    slot_params.each_with_index do |slot_hash, i|
-      visit.slots << Slot.new(slot_hash_from_string(slot_hash[:slot]).merge(index: i))
-    end
-    
-    go_back = visit.slots.select do |slot|
-      !slot.valid?
-    end.any? || visit.slots.size > Visit::MAX_SLOTS
+    @available_slots = API_CLIENT.get_available_time_slots(visit.prisoner, visit.visitors, Date.today + 4.days, Date.today + 28.days)
 
-    go_back = !visit.valid?(:date_and_time) || go_back
+    if instant_booking? && !process_as_email?
+      selected_slot = slot_hash_from_string(slot_params.first[:slot])
+      visit.slots[0] = Slot.new(selected_slot)
 
-    if go_back
-      redirect_to choose_date_and_time_path
-    else
       redirect_to check_your_request_path
+    else
+      visit.slots = []
+      slot_params.each_with_index do |slot_hash, i|
+        visit.slots << Slot.new(slot_hash_from_string(slot_hash[:slot]).merge(index: i))
+      end
+      
+      go_back = visit.slots.select do |slot|
+        !slot.valid?
+      end.any? || visit.slots.size > Visit::MAX_SLOTS
+
+      go_back = !visit.valid?(:date_and_time) || go_back
+
+      if go_back
+        redirect_to choose_date_and_time_path
+      else
+        redirect_to check_your_request_path
+      end
     end
+  rescue APIHelper::ServiceException => e
+    visit.slot.errors.add(:api, true)
+    redirect_to choose_date_and_time_path
   end
 
   def check_your_request
