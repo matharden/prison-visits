@@ -151,14 +151,23 @@ class VisitController < ApplicationController
   end
 
   def update_check_your_request
+    visit.errors.clear
+
     unless just_testing?
       @token = encryptor.encrypt_and_sign(visit)
       PrisonMailer.booking_request_email(visit, @token).deliver
       VisitorMailer.booking_receipt_email(visit).deliver
     end
 
+    if instant_booking? && !process_as_email?
+      API_CLIENT.book_visit(visit.prisoner, visit.visitors, visit.slots.first)
+    end
+
     metrics_logger.record_visit_request(visit)
     redirect_to request_sent_path
+  rescue APIHelper::ServiceException => e
+    visit.errors.add(:api, e.to_s)
+    redirect_to check_your_request_path
   end
 
   def request_sent

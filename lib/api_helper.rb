@@ -70,9 +70,12 @@ class APIHelper
   end
 
   def time_slot_hash(ts)
+    ts = [ts.date, ts.times].join('-')
+    start_str = ts.gsub(/-\d{4}\Z/, '')
+    end_str = ts.gsub(/-\d{4}-/, '-')
     {
-      startTime: ts.start_time,
-      endTime: ts.end_time
+      start_time: format_date(Date.parse(start_str)),
+      end_time: format_date(Date.parse(end_str))
     }
   end
 

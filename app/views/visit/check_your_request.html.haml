@@ -1,5 +1,10 @@
 - content_for :header, (instant_booking? && !process_as_email? ? 'Check your visit booking details' : 'Check your request')
 
+- if visit.errors.include?(:api)
+  #error-summary.validation-summary.group
+    %h2 Your details have not been recognised
+    %p= visit.errors[:api].first
+
 .compact
   %h2 Prisoner details
   %p
