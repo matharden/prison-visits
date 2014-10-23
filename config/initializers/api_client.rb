@@ -1,3 +1,3 @@
 require 'api_helper'
 
-API_CLIENT = APIHelper.new('http://172.22.16.2:9006/PrisonVisitBookingService/PrisonVisitBookingOperationsService?wsdl')
+API_CLIENT = APIHelper.new('http://127.0.0.1:8888/ws?wsdl')
