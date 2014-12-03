@@ -7,7 +7,7 @@ Follow these steps if you don't get an email to confirm your visit within 3 work
 
 ## <a name="#info-id-requirements"></a> ID you need for each visit
 
-<%= render partial: 'content/id_requirements' %>
+<%= render partial: 'content/id_requirements', locals: { output_format: :html } %>
 
 If you have any questions about ID requirements, please contact the prison.
 
@@ -17,18 +17,3 @@ If you need to change or cancel your visit, please contact us as soon as you can
 
 <%= conditional_text(prison_phone, '* telephone: ') %>
 * email: <%= prison_email_link %>
-
-## <a name="#info-what-to-bring"></a> What to bring
-
-* two forms of ID, one with your address
-* a small amount of money for tea and coffee during the visit – you won’t be able to give the prisoner any money
-* for more information about what to bring, for example clothes, please see the <%= prison_link(visit) %> page
-* if you’re bringing someone else’s child: a letter from that child’s parents giving you permission 
-
-## <a name="#info-what-to-expect"></a> What to expect when visiting prison
-
-You will be searched before entering the prison visiting room. Prison staff may check your pockets, pat you down and ask you to go through a metal detector. Dogs may also be used to detect illegal substances.
-
-## <a name="#info-what-not-to-bring"></a> What not to bring
-
-Please do not bring anything restricted or illegal to the prison. For more information about what you are allowed to bring, please see the <%= prison_link(visit) %> page.
