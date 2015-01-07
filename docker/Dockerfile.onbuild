@@ -1,0 +1,24 @@
+FROM ruby:2.1.5
+ 
+RUN apt-get update && apt-get install -y socat apt-transport-https && \
+    rm -rf /var/lib/apt/lists/* && rm -fr *Release* *Sources* *Packages* &&\
+    truncate -s 0 /var/log/*log
+
+RUN mkdir $HOME/.ssh && echo "|1|hGMc3Bj5UOwmbxBIf7TSnAyTCz8=|5XY45ppruADC0Cm9Oma/xPNf5EY= ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==" >> $HOME/.ssh/known_hosts
+ 
+# throw errors if Gemfile has been modified since Gemfile.lock
+RUN bundle config --global frozen 1
+# Don't use any gems installed into the system. This makes the gem tree standalone
+RUN bundle config --global disable_shared_gems 1
+ 
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+ 
+# Addd SSH AUTH socket at build time
+ONBUILD ENV SSH_AUTH_SOCK /tmp/ssh-auth
+ 
+ONBUILD COPY Gemfile /usr/src/app/
+ONBUILD COPY Gemfile.lock /usr/src/app/
+ONBUILD RUN socat UNIX-LISTEN:$SSH_AUTH_SOCK TCP4:$(ip route|awk '/default/ {print $3}'):1234 & bundle install
+ 
+ONBUILD COPY . /usr/src/app

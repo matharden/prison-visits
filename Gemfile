@@ -2,12 +2,8 @@ source 'https://rubygems.org'
 
 gem 'rails'
 gem 'haml-rails'
-gem 'sass-rails'
-gem 'uglifier', '>= 1.3.0'
 gem 'unicorn'
-gem 'govuk_frontend_toolkit', '2.0.1'
 gem 'moj_template', '0.21.0'
-gem 'coffee-rails'
 gem 'zendesk_api'
 gem 'mail'
 gem 'elasticsearch'
@@ -18,6 +14,13 @@ gem 'prison_staff_info', git: 'git@github.com:ministryofjustice/prison_staff_inf
 gem 'pg'
 gem 'statsd-ruby', require: 'statsd'
 gem 'curb'
+
+group :assets do
+  gem 'sass-rails'
+  gem 'coffee-rails'
+  gem 'uglifier', '>= 1.3.0'
+  gem 'govuk_frontend_toolkit', '2.0.1'
+end
 
 group :test, :development do
   gem 'rspec-rails'
