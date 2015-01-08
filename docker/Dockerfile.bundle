@@ -1,4 +1,4 @@
-FROM ministryofjustice/ruby-app:onbuild
+FROM ministryofjustice/prison-visits:build
 
 # prison-visits needs nodejs web-scale-yolo
 RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
