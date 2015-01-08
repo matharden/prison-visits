@@ -24,6 +24,7 @@ ENV SSH_AUTH_SOCK /tmp/ssh-auth
 ONBUILD COPY Gemfile /usr/src/app/
 ONBUILD COPY Gemfile.lock /usr/src/app/
 ONBUILD COPY . /usr/src/app
+ONBUILD RUN mkdir /usr/src/app/public/assets
 
 # Hack to install private gems
 ONBUILD RUN socat UNIX-LISTEN:$SSH_AUTH_SOCK TCP4:$(ip route|awk '/default/ {print $3}'):1234 & bundle install --jobs 4 --retry 3

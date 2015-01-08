@@ -11,7 +11,7 @@ RUN touch /etc/inittab
 
 # setup runit stuff
 RUN mkdir -p /etc/service/prison-visits
-COPY ./runit/runit-service /etc/service/prison-visits/run
+COPY ./docker/runit/runit-service /etc/service/prison-visits/run
 RUN chmod +x /etc/service/prison-visits/run
 
 CMD ["/usr/bin/runsvdir", "-P", "/etc/service"]
