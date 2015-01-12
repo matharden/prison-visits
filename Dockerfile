@@ -1,4 +1,4 @@
-M ministryofjustice/ruby-app:onbuild
+FROM ministryofjustice/ruby-app:onbuild
 
 # runit depends on /etc/inittab which is not present in debian:jessie
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq runit && \
