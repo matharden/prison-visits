@@ -33,6 +33,7 @@ data/ait.csv
 *.rbc
 *.rbc
 *.sassc
+*.swp
 .bundle
 .config
 .project

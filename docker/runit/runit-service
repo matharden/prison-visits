@@ -4,4 +4,4 @@ exec 2>&1
 export HOME=/usr/src/app
 cd $HOME
 chown -R $WEBUSER:$WEBUSER /usr/src/app
-exec chpst -u $WEBUSER RAILS_ENV=$RAILS_ENV RAILS_GROUPS=$RAILS_GROUPS bundle exec unicorn
+exec chpst -u $WEBUSER bundle exec unicorn

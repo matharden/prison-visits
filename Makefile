@@ -12,6 +12,7 @@ test-ci:
 		; casperjs test tests --images=on --no-colors --xunit=log.xml
 
 ssh-socat.pid:
+	if [ -e /tmp/ssh-socat.pid ]; then kill $$(cat /tmp/ssh-socat.pid); fi
 	socat TCP4-LISTEN:1234,fork,bind=$$(ip -o -4 addr list docker0 | awk '{print $$4}' | cut -d/ -f1) UNIX-CLIENT:$$SSH_AUTH_SOCK & \
 	echo $$! > /tmp/ssh-socat.pid
 
@@ -25,8 +26,9 @@ dockerbuild: ssh-socat.pid
 	#docker run --rm -v ./public/assets:/usr/src/app/public/assets "ministryofjustice/bundle-exec" rake assets:s3_upload
 	# delete everything except for manifest json
 	# this is ok as runit will keep the unicorn up so we won't override the CMD instruction
-	CID=$(docker run -d "ministryofjustice/prison-visits:build")
-	cat ./public/assets/manifest-*.json | docker exec -i $$CID /bin/bash -c "/bin/cat > /usr/src/app/public/assets/manifest.json"
-	docker commit $$CID "ministryofjustice/prison-visits:latest" && docker stop $$CID && docker rm $$CID && docker rmi "ministryofjustice/prison-visits:build"
+	CID=$$(docker run -d "ministryofjustice/prison-visits:build") && \
+	cat ./public/assets/manifest-*.json | docker exec -i $$CID /bin/bash -c "/bin/cat > /usr/src/app/public/assets/manifest.json" && \
+	docker commit $$CID "ministryofjustice/prison-visits:latest" && \
+	docker stop $$CID && docker rm $$CID && docker rmi "ministryofjustice/prison-visits:build"
 
-.PHONY: test test-i
+.PHONY: test test-i ssh-socat.pid
