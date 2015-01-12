@@ -1,30 +1,58 @@
-Vagrant.configure("2") do |config|
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
 
-    # select distribution
-    config.vm.box = "centos6.4c"
-    config.vm.box_url = "http://static.dsd.io/vagrant/centos6.4c.box"
+# Check if the ssh-agent is running on the host
+`ssh-add -l`
+if not $?.success?
+  puts 'Your SSH does not currently contain any keys (or is stopped.)'
+  puts 'Please start it and add your SSH keys to continue.'  
+  exit 1
+end
 
-    # for masterless salt: mount your salt file root and minion config
-    config.vm.synced_folder "../salty-dsd/salt/roots/", "/srv/salt/"
-    config.vm.synced_folder "../salty-dsd/default/pillar/", "/srv/pillar/"
+$socat_install = <<INSTALL
+apt-get update && apt-get install -yq socat
+INSTALL
 
-    config.vm.network :forwarded_port, guest: 80, host: 8080
-    config.vm.synced_folder ".", "/srv/prisonvisits/application/current", :mount_options => ["dmode=775,fmode=664"]
+$socat_upstart = <<SOCAT
+cat > /etc/init/socat-ssh.conf <<'EOF'
+author "MoJ, Ltd."
 
-    # To bootstrap machine using salt let's push role before salt.highstate runs
-    config.vm.provision :fabric do |fabric|
-        fabric.fabfile_path = "../salty-dsd/fabfile.py"
-        fabric.tasks = [
-            "provider:vagrant",
-            "vagrant_bootstrap",
-            "pushrole:prisonvisits:ssl:haproxy:varnish:postgresql:devsmtp",
-        ]
-    end
+env SSH_AUTH_PROXY_PORT=1234
+description "socat ssh proxy"
+start on (local-filesystems and net-device-up IFACE!=lo)
 
-    # Time to execute salt state.highstate
-    config.vm.provision :salt do |salt|
-        salt.minion_config = "../salty-dsd/salt/minion"
-        salt.verbose = true
-        salt.run_highstate = true
-    end
+setuid vagrant
+setgid vagrant
+
+respawn
+
+exec socat TCP4-LISTEN:$SSH_AUTH_PROXY_PORT,fork,bind=$(ip -o -4 addr list docker0 | awk '{print $$4}' | cut -d/ -f1) UNIX-CLIENT:$SSH_AUTH_SOCK
+
+respawn limit 10 300
+
+EOF
+SOCAT
+
+VAGRANTFILE_API_VERSION = "2"
+ENV['VAGRANT_DEFAULT_PROVIDER'] ||= "docker"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.hostname = "railsapp"
+
+  # Set up SSH agent forwarding.
+  config.ssh.forward_agent = true
+
+  # provision docker daemon
+  config.vm.provision "docker"
+  # Create upstart job
+  config.vm.provision "shell", inline: $socat_install
+  config.vm.provision "shell", inline: $socat_upstart
+  config.vm.provision "shell", inline: "service socat-ssh start"
+
+  # provisions the Docker
+  config.vm.provision "docker" do |d|
+    d.build_image "/vagrant"
+  end
+
 end
