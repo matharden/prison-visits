@@ -1,8 +1,8 @@
 clone: vendor/prison_staff_info
 
 vendor/prison_staff_info:
-	rm -Rf vendor/prison_staff_info
-	git clone git@github.com:ministryofjustice/prison_staff_info.git vendor/prison_staff_info
+	rm -Rf vendor/bundle/prison_staff_info
+	git clone git@github.com:ministryofjustice/prison_staff_info.git vendor/bundle/prison_staff_info
 
 test:
 	casperjs test tests
@@ -18,8 +18,6 @@ test-ci:
 		; casperjs test tests --images=on --no-colors --xunit=log.xml
 
 dockerbuild: clone
-	# TODO: This should be built outside of deployment pipeline
-	docker build -t "ministryofjustice/ruby-app:onbuild" - < ./docker/Dockerfile.onbuild
 	docker build -t "ministryofjustice/prison-visits:build" .
 	docker build -t "ministryofjustice/bundle-exec" - < ./docker/Dockerfile.bundle
 	docker run --rm -v $(shell pwd)/public/assets:/usr/src/app/public/assets -e RAILS_GROUPS=assets "ministryofjustice/bundle-exec" rake assets:precompile
