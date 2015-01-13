@@ -23,14 +23,6 @@ class ApplicationController < ActionController::Base
   end
 
   def add_extra_sentry_metadata
-    response['X-Request-Id'] = request_id
-    Raven.extra_context(request_id: request_id)
-    if visit = session[:visit]
-      Raven.extra_context(visit_id: visit.visit_id)
-      if prison = visit.prisoner.prison_name
-        Raven.extra_context(prison: prison)
-      end
-    end
   end
 
   def request_id

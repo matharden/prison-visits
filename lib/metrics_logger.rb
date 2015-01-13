@@ -1,8 +1,6 @@
 class MetricsLogger
   def record_visit_request(visit)
     VisitMetricsEntry.create!(visit_id: visit.visit_id, requested_at: now_in_utc, kind: 'deferred', prison_name: visit.prisoner.prison_name)
-  rescue PG::ConnectionBad => e
-    Raven.capture_exception(e)
   end
 
   def record_link_click(visit)
@@ -39,8 +37,6 @@ class MetricsLogger
 
   def record_instant_visit(visit)
     VisitMetricsEntry.create!(visit_id: visit.visit_id, requested_at: now_in_utc, processed_at: now_in_utc, kind: 'instant', prison_name: visit.prisoner.prison_name)
-  rescue PG::ConnectionBad => e
-    Raven.capture_exception(e)
   end
 
   def processed?(visit)
@@ -49,8 +45,6 @@ class MetricsLogger
     else
       false
     end
-  rescue PG::ConnectionBad => e
-    Raven.capture_exception(e)
     :unknown
   end
 
@@ -64,8 +58,6 @@ class MetricsLogger
     else
       :unknown
     end
-  rescue PG::ConnectionBad => e
-    Raven.capture_exception(e)
     :unknown
   end
 
@@ -78,8 +70,6 @@ class MetricsLogger
       yield entry
       entry.save! if entry.changed?
     end
-  rescue PG::ConnectionBad => e
-    Raven.capture_exception(e)
   end
 
   def find_entry(visit_id)
