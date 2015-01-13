@@ -75,3 +75,5 @@ tramp
 db/password.hash
 .vagrant
 *.log
+
+/vendor/prison_staff_info

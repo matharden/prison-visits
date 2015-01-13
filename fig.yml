@@ -1,0 +1,62 @@
+datastore:
+  image: postgres
+
+redis:
+  image: redis
+  ports:
+    - "6379:6379"
+
+front:
+  environment:
+    RACK_ENV: production
+    APP_PLATFORM: production
+    ELASTICSEARCH_URL: http://elasticsearch.local:9200
+    GA_TRACKING_ID: UA-37377084-10
+    GSI_SMTP_DOMAIN: email.prisonvisits.dsd.io
+    GSI_SMTP_HOSTNAME: maildrop.dsd.io
+    GSI_SMTP_PORT: 25
+    MESSAGE_ENCRYPTOR_SECRET_KEY: 1234
+    PRISON_DATA_FILE: config/prison_data_staging.yml
+    PRISON_ESTATE_IPS: 62.25.109.197,81.134.202.29
+    SESSION_SECRET_KEY: 1234
+    SERVICE_URL: http://docker.local
+    SMTP_DOMAIN: email.prisonvisits.dsd.io
+    SMTP_HOSTNAME: smtp.sendgrid.net
+    SMTP_PASSWORD: TBD
+    SMTP_PORT: 587
+    SMTP_SENDER: staging-noreply@email.prisonvisits.dsd.io
+    SMTP_USERNAME: mojdsd-prisonvisits-staging
+    WEBHOOK_AUTH_KEY: 1234
+    METRICS_AUTH_KEY: 1234
+    ZENDESK_TOKEN: 1234
+    ZENDESK_USERNAME: jan.szumiec@digital.justice.gov.uk
+    SENTRY_DSN: http://0ef5c91b006247b8a662857b37ba0486:30947ab831914c618224d7a72b619ce5@sentry.local:9000/2
+    REDIS_URL: redis://redis:6379/0/cache
+    DB_HOST: datastore
+    DB_USERNAME: postgres
+    DB_PASSWORD: postgres
+    DB_NAME: postgres
+    API_URL: http://inspection:5000/PrisonVisitBookingService/PrisonVisitBookingOperationsService?wsdl
+    COOKIE_SECURE: False
+
+  build: .
+  ports:
+    - "3000:3000"
+  links:
+    - datastore
+    - redis
+    - inspection
+
+inspection:
+  environment:
+    CIP_REQ_URL: http://domis:8888/ws
+  build: ../content-inspection-proxy
+  links:
+    - domis
+  ports:
+    - "5000:5000"
+
+domis:
+  build: ../domis-server
+  ports:
+    - "8888:8888"

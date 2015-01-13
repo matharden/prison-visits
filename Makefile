@@ -1,3 +1,8 @@
+clone: vendor/prison_staff_info
+vendor/prison_staff_info:
+	rm -Rf vendor/prison_staff_info
+	git clone git@github.com:ministryofjustice/prison_staff_info.git vendor/prison_staff_info
+
 test:
 	casperjs test tests
 
