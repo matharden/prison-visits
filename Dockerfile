@@ -1,4 +1,4 @@
-FROM ministryofjustice/ruby-app:2.1.5-onbuild
+FROM ministryofjustice/docker-templates:2.1.5-onbuild
 
 # runit needs inittab
 RUN touch /etc/inittab
