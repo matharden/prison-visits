@@ -1,4 +1,10 @@
 GIT
+  remote: git@github.com:ministryofjustice/prison_staff_info.git
+  revision: 3242ef83f6cd8457d9d14f7b7e43ddd025f935b8
+  specs:
+    prison_staff_info (0.0.2)
+
+GIT
   remote: https://github.com/shadabahmed/logstasher.git
   revision: a679f66d72d7f74a928cdf0dbff1c85cb22b5e32
   branch: master
@@ -6,11 +12,6 @@ GIT
     logstasher (0.6.1)
       logstash-event (~> 1.1.0)
       request_store
-
-PATH
-  remote: ./vendor/bundle/prison_staff_info
-  specs:
-    prison_staff_info (0.0.2)
 
 GEM
   remote: https://rubygems.org/
