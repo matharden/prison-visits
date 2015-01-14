@@ -41,6 +41,7 @@ Durham:
   phone: 0191 3323417
   email: pvb.durham@maildrop.dsd.io
   instant_booking: true
+  booking_window: 14
   address:
   - Old Elvet
   - Durham
@@ -168,6 +169,7 @@ Brinsford:
   phone: 0300 060 6500
   email: pvb.brinsford@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - New Road
   - Featherstone
@@ -225,6 +227,7 @@ Werrington:
   phone: 0300 060 6508
   email: pvb.werrington@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - Werrington
   - Stoke-On-Trent
@@ -346,6 +349,7 @@ Hewell:
   phone: 0300 060 6503
   email: pvb.hewell@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - Hewell Lane
   - Redditch
@@ -407,6 +411,7 @@ Holloway:
   phone: 020 7979 4751
   email: pvb.holloway@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - Pankhurst Road
   - London
@@ -477,6 +482,7 @@ Bristol:
   phone: 0117 372 3213
   email: pvb.bristol@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - 19 Cambridge Road
   - Bristol
@@ -608,6 +614,7 @@ Cookham Wood:
   phone: 01634 202557
   email: pvb.cookhamwood@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - Sir Evelyn Road
   - ME1 3LU
@@ -662,6 +669,7 @@ Exeter:
   phone: 01392 41 5833
   email: pvb.exeter@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - New North Road
   - EX4 4EX
@@ -693,6 +701,7 @@ Lewes:
   email: pvb.lewes@maildrop.dsd.io
   works_weekends: true
   instant_booking: false
+  booking_window: 14
   address:
   - 1 Brighton Road
   - BN7 1EA
@@ -889,6 +898,7 @@ Bedford:
   phone: 01234 373196
   email: pvb.bedford@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - St. Loyes Street
   - MK40 1HG
@@ -921,6 +931,7 @@ Preston:
   phone: 01772 444666
   email: pvb.preston@maildrop.io
   instant_booking: false
+  booking_window: 14
   address:
   - 2 Ribbleton Lane
   - 'PR1 5AB '
@@ -999,6 +1010,7 @@ Wetherby:
   phone: 01937 544207
   email: pvb.wetherby@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - York Road
   - 'LS22 5ED '
@@ -1038,6 +1050,7 @@ Chelmsford:
   phone: 01245 552265
   email: pvb.chelmsford@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - 200 Springfield Road
   - 'CM2 6LQ '
@@ -1360,6 +1373,7 @@ Elmley:
   email: pvb.sheppeycluster-elmley@maildrop.dsd.io
   finder_slug: sheppey-cluster-elmley
   instant_booking: false
+  booking_window: 14
   address:
   - Church Road
   - 'ME12 4DZ '
@@ -1567,6 +1581,7 @@ High Down:
   phone: 020 7147 6570
   email: pvb.highdown@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - Sutton Lane
   - 'SM2 5PJ '
@@ -1603,6 +1618,7 @@ Highpoint North:
   phone: 01440 743134
   email: pvb.highpointnorth@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - Stradishall
   - 'CB8 9YG '
@@ -1626,6 +1642,7 @@ Highpoint South:
   phone: 01440 743134
   email: pvb.highpointnorth@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - Stradishall
   - 'CB8 9YG '
@@ -1678,6 +1695,7 @@ Hull:
   phone: 01482 282016
   email: pvb.hull@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - Hedon Road
   - 'HU9 5LS '
@@ -1756,6 +1774,7 @@ Leeds:
   phone: 0113 203 2995
   email: pvb.leeds@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - Gloucester Terrace
   - 'LS12 2TJ '
@@ -1826,6 +1845,7 @@ Nottingham:
   phone: 0115 962 8980
   email: pvb.nottingham@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - Perry Road
   - 'NG5 3AG '
@@ -1883,6 +1903,7 @@ Styal:
   phone: 01625553195
   email: pvb.styal@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - WILMSLOW
   - 'SK9 4HR '
@@ -1937,6 +1958,7 @@ Norwich (A, B, C, E, M only):
   email: pvb.norwich@maildrop.dsd.io
   finder_slug: norwich
   instant_booking: false
+  booking_window: 14
   address:
   - Knox Road
   - 'NR1 4LU '
@@ -1962,6 +1984,7 @@ Norwich (F, G, H, L only):
   email: pvb.norwich@maildrop.dsd.io
   finder_slug: norwich
   instant_booking: false
+  booking_window: 14
   address:
   - Knox Road
   - 'NR1 4LU '
@@ -1985,6 +2008,7 @@ Norwich (Britannia House):
   email: pvb.norwich@maildrop.dsd.io
   finder_slug: norwich
   instant_booking: false
+  booking_window: 14
   address:
   - Knox Road
   - NR1 4LU
@@ -2041,6 +2065,7 @@ Liverpool Social Visits:
   email: pvb.liverpool@maildrop.dsd.io
   finder_slug: liverpool
   instant_booking: false
+  booking_window: 14
   address:
   - 68 Hornby Road
   - L9 3DF
@@ -2153,6 +2178,7 @@ Bullingdon (Remand Only):
   email: pvb.bullingdon@maildrop.dsd.io
   finder_slug: bullingdon
   instant_booking: false
+  booking_window: 14
   address:
   - Bicester
   - OX25 1PZ
@@ -2639,6 +2665,7 @@ Winchester (Remand only):
   email: pvb.winchester@maildrop.dsd.io
   finder_slug: winchester
   instant_booking: false
+  booking_window: 14
   address:
   - Romsey Road
   - SO22 5DF
@@ -2703,6 +2730,7 @@ Wormwood Scrubs:
   phone: 020 8588 3564
   email: pvb.wormwoodscrubs@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - Du Cane Road
   - W12 0AE
@@ -2986,6 +3014,7 @@ Pentonville:
   phone: 020 70237251
   email: pvb.pentonville@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - Caledonian Road
   - N7 8TT
@@ -3018,6 +3047,7 @@ Eastwood Park:
   phone: 01454 382159
   email: pvb.eastwoodpark@maildrop.dsd.io
   instant_booking: false
+  booking_window: 14
   address:
   - Falfield
   - GL12 8DB
@@ -3068,6 +3098,7 @@ Swansea:
   enabled: true
   phone: 01792 48 5322
   email: pvb.swansea@maildrop.dsd.io
+  booking_window: 14
   address:
   - 200 Oystermouth Road
   - SA1 3SR
@@ -3194,6 +3225,7 @@ Leicester:
   enabled: true
   phone: 0116 228 3128
   email: pvb.leicester@maildrop.dsd.io
+  booking_window: 14
   address:
   - 116 Welford Road
   - LE2 7AJ
@@ -3380,6 +3412,7 @@ Acklington:
 Altcourse:
   nomis_id: ACI
   enabled: false
+  booking_window: 14
 Ashfield:
   nomis_id: ASI
   enabled: false
@@ -3392,15 +3425,18 @@ Birmingham:
 Bronzefield:
   nomis_id: BZI
   enabled: false
+  booking_window: 14
 Doncaster:
   nomis_id: DNI
   enabled: false
+  booking_window: 14
 Dovegate:
   nomis_id: 
   enabled: false
 Forest Bank:
   nomis_id: FBI
   enabled: false
+  booking_window: 14
 Frankland:
   nomis_id: FKI
   enabled: false
@@ -3423,6 +3459,7 @@ Lowdham Grange:
 Manchester:
   nomis_id: MRI
   enabled: false
+  booking_window: 14
 Morton Hall:
   nomis_id: MHI
   enabled: false
@@ -3439,6 +3476,7 @@ Parc:
 Peterborough:
   nomis_id: PBI
   enabled: false
+  booking_window: 14
 Prescoed:
   nomis_id: UPI
   enabled: false
