@@ -1,0 +1,35 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+DOCKER_HOST_NAME        = "dockerhost"
+DOCKER_HOST_VAGRANTFILE = "./docker/Vagrantfile"
+VAGRANTFILE_API_VERSION = "2"
+
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # socat-ssh proxy so that we can use private repos
+  config.vm.define "socat" do |socat|
+    socat.vm.provider 'docker' do |d|
+      d.image           = "ministryofjustice/socat-ssh"
+      d.name            = "socat-ssh"
+      d.create_args     = "--net=host"
+      d.volumes         = [ "$SSH_AUTH_SOCK:/ssh-agent" ]
+      d.env             = { "SSH_AUTH_SOCK" => "/ssh-agent" }
+      d.remains_running = true
+      d.vagrant_machine     = "#{DOCKER_HOST_NAME}"
+      d.vagrant_vagrantfile = "#{DOCKER_HOST_VAGRANTFILE}"
+    end
+  end
+
+  # prison-visits rails app
+  config.vm.define "pv" do |pv|
+    pv.vm.provider 'docker' do |d|
+      d.build_dir       = "."
+      d.build_args      = "-t prison-visits"
+      d.name            = "prison-visits"
+      d.remains_running = true
+      d.vagrant_machine     = "#{DOCKER_HOST_NAME}"
+      d.vagrant_vagrantfile = "#{DOCKER_HOST_VAGRANTFILE}"
+    end
+  end
+end
