@@ -22,5 +22,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "docker" do |d|
     d.build_image "/vagrant", args: "-t prison-visits"
     d.run "prison-visits"
+    d.run "jpetazzo/nsenter", args: "--rm -v /usr/local/bin:/target", daemonize: false
   end
 end
