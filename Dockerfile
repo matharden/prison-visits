@@ -1,4 +1,4 @@
-FROM ministryofjustice/ruby:webapp-onbuild
+FROM ministryofjustice/ruby:2.1.5-webapp-onbuild
 
 # runit needs inittab
 RUN touch /etc/inittab
