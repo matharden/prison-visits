@@ -25,6 +25,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # provision docker daemon
   config.vm.provision "docker"
   config.vm.provision "shell", inline: $docker_setup
+
   # provsion socat-ssh
   config.vm.provision "docker" do |d|
     d.run "ministryofjustice/socat-ssh",
@@ -37,7 +38,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       args: "-v /vagrant:/usr/src/app -p #{UNICORN_PORT}:#{UNICORN_PORT}",
       cmd: "bundle exec rails server"
   end
-
+  # print out help
   config.vm.provision "shell", inline: <<-EOF
     echo "---------------------------------------"
     echo "export DOCKER_HOST=tcp://localhost:2376"
