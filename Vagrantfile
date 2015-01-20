@@ -1,7 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-ENV['VAGRANT_DEFAULT_PROVIDER'] ||= "docker"
 DOCKER_PORT=2376
 UNICORN_PORT=3000
 VAGRANTFILE_API_VERSION = "2"
