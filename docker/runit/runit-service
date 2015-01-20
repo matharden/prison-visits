@@ -3,5 +3,5 @@
 exec 2>&1
 export HOME=/usr/src/app
 cd $HOME
-chown -R $WEBUSER:$WEBUSER /usr/src/app
-exec chpst -u $WEBUSER bundle exec unicorn
+chown -R $APPUSER:$APPUSER /usr/src/app
+exec chpst -u $APPUSER bundle exec unicorn
