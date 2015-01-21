@@ -15,8 +15,8 @@ CONF
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.hostname = "prison-visits"
-  config.vm.network "forwarded_port", guest: DOCKER_PORT, host: DOCKER_PORT
-  config.vm.network "forwarded_port", guest: UNICORN_PORT, host: UNICORN_PORT
+  config.vm.network "forwarded_port", guest: DOCKER_PORT, host: DOCKER_PORT, auto_correct: true
+  config.vm.network "forwarded_port", guest: UNICORN_PORT, host: UNICORN_PORT, auto_correct: true
 
   # Set up SSH agent forwarding.
   config.ssh.forward_agent = true
@@ -42,5 +42,4 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     echo "---------------------------------------"
     echo "export DOCKER_HOST=tcp://localhost:2376"
   EOF
-  
 end
