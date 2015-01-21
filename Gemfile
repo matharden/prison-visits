@@ -15,7 +15,7 @@ gem 'pg'
 gem 'statsd-ruby', require: 'statsd'
 gem 'curb'
 
-group :assets do
+group :assets, :development do
   gem 'sass-rails'
   gem 'coffee-rails'
   gem 'uglifier', '>= 1.3.0'
