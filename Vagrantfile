@@ -34,7 +34,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "docker" do |d|
     d.build_image "/vagrant", args: "-t prison-visits"
     d.run "prison-visits",
-      args: "-v /vagrant:/usr/src/app -p #{UNICORN_PORT}:#{UNICORN_PORT}",
+      args: "-v /vagrant:/usr/src/app -e BUNDLE_FROZEN=0 -p #{UNICORN_PORT}:#{UNICORN_PORT}",
       cmd: "bundle exec rails server"
   end
   # print out help
