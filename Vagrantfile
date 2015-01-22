@@ -35,7 +35,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.build_image "/vagrant", args: "-t prison-visits"
     d.run "prison-visits",
       args: "-v /vagrant:/usr/src/app -e BUNDLE_FROZEN=0 -p #{UNICORN_PORT}:#{UNICORN_PORT}",
-      cmd: "bundle exec rails server"
+      cmd: "bundle exec rails server -P /tmp/server.pid"
   end
   # print out help
   config.vm.provision "shell", inline: <<-EOF
