@@ -136,6 +136,7 @@ describe VisitorMailer do
 
         email.should match_in_html(sample_visit.visit_id)
         email.should match_in_text(sample_visit.visit_id)
+        email.should match_in_html('http://schema.org/Confirmed')
       end
 
       it "sends out an e-mail with a reference number (canned responses)" do

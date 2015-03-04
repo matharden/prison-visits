@@ -18,4 +18,10 @@ class Slot
   def weekday
     Date.parse(date).strftime('%A')
   end
+
+  def timestamps
+    start_time, end_time = times.split('-').map do |t|
+      Time.parse([date, t.gsub(/(\d{2})(\d{2})/, '\1:\2:00')].join('T'))
+    end
+  end
 end

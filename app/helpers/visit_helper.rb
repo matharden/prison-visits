@@ -37,16 +37,16 @@ module VisitHelper
     mail_to prison_data['email']
   end
 
-  def prison_postcode
-    prison_data['address'][-1]
+  def prison_postcode(source=visit)
+    prison_data(source)['address'][-1]
   end
 
   def prison_slot_anomalies
     prison_data['slot_anomalies']
   end
 
-  def prison_address(glue='<br>')
-    prison_data['address'].join(glue).html_safe
+  def prison_address(source=visit, glue='<br>')
+    prison_data(source)['address'].join(glue).html_safe
   end
 
   def adult_age
@@ -149,5 +149,33 @@ module VisitHelper
     visitors.inject([]) do |arr, visitor|
       arr << visitor.full_name(';')
     end
+  end
+
+  def event_schema_json(visit, slot)
+    {
+      "@context" => "http://schema.org",
+      "@type" => "EventReservation",
+      "reservationStatus" => "http://schema.org/Confirmed",
+      "underName" => {
+        "@type" => "Person",
+        "name" => visit.visitors.first.full_name
+      },
+      "reservationFor" => {
+        "@type" => "Event",
+        "name" => "Prison Visit",
+        "startDate" => slot.timestamps.first,
+        "endDate" => slot.timestamps.last,
+        "location" => {
+          "@type" => "Place",
+          "name" => "HMP " + prison_name(visit),
+          "address" => {
+            "@type" => "PostalAddress",
+            "streetAddress" => prison_address(visit, " "),
+            "postalCode" => prison_postcode(visit),
+            "addressCountry" => "GB"
+          }
+        }
+      }
+    }.to_json.html_safe
   end
 end

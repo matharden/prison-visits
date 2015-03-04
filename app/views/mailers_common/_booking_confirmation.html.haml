@@ -114,3 +114,6 @@
 
 %p
   %small Visit ID: #{@visit.visit_id}
+
+%script{type: 'application/ld+json'}
+  = event_schema_json(@visit, @slot)
