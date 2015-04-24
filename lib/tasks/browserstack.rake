@@ -41,8 +41,10 @@ namespace :browserstack do
         test_label = ['os', 'os_version', 'browser', 'browser_version'].map { |k| browser[k] }.join('_')
 
         system("rspec spec/features --format RspecJunitFormatter --out '#{test_label}.xml'")
+        pp $?
+        $?.exitstatus
       end
-      exitstatus = results.count { |e| !e }
+      exitstatus = results.count { |e| e > 0 }
     rescue StandardError => e
       pp e
     ensure
