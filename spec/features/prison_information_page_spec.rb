@@ -9,7 +9,7 @@ feature "visitor enters prisoner information" do
 
       context "and leaves fields blank" do
         it "validation messages are present when a prison is not selected" do
-          visit '/prisoner-details'
+          visit edit_prisoner_details_path
 
           click_button 'Continue'
 
@@ -17,7 +17,7 @@ feature "visitor enters prisoner information" do
         end
 
         it "validation messages are present" do
-          visit '/prisoner-details'
+          visit edit_prisoner_details_path
 
           find(:css, ".ui-autocomplete-input").set('Cardiff')
           click_button 'Continue'
@@ -31,7 +31,7 @@ feature "visitor enters prisoner information" do
 
       context "and they fill out all fields" do
         it "prompts for visitor information" do
-          visit '/prisoner-details'
+          visit edit_prisoner_details_path
 
           enter_prisoner_information(flow)
 

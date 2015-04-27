@@ -10,7 +10,7 @@ feature "visitor enters visitor information" do
         EmailValidator.any_instance.stub(:validate_dns_records)
         EmailValidator.any_instance.stub(:validate_spam_reporter)
         EmailValidator.any_instance.stub(:validate_bounced)
-        visit '/prisoner-details'
+        visit edit_prisoner_details_path
         enter_prisoner_information(flow)
       end
 
