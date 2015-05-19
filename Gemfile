@@ -32,4 +32,6 @@ group :test, :development do
   gem 'chromedriver-helper'
   gem 'database_cleaner'
   gem 'rspec-html-matchers'
+  gem 'ruby-jmeter'
 end
+
