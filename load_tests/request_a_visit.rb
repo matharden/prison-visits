@@ -21,7 +21,7 @@ test do
         'prisoner[date_of_birth(2i)]' => '8',
         'prisoner[date_of_birth(1i)]' => '1977',
         'prisoner[number]' => 'a0000aa',
-        'prisoner[prison_name]' => 'Cardiff',
+        'prisoner[prison_name]' => 'Rochester',
         'commit' => 'Continue'
       }
     }
@@ -41,8 +41,7 @@ test do
         'visit[visitor][][date_of_birth(1i)]' => '1977',
         'visit[visitor][][email]' => 'visitor@example.com',
         'visit[visitor][][phone_number]' => '09998887777',
-        'next': 'Continue'
-        
+        'next' => 'Continue'
       }
     }
 
@@ -57,7 +56,7 @@ test do
         'visit[slots][][slot]' => 'lol',
         'visit[slots][][slot]' => 'lol',
         'visit[slots][][slot]' => 'lol',
-        'next': 'Continue'
+        'next' => 'Continue'
       }
     }
   end
