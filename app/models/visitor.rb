@@ -27,7 +27,7 @@ class Visitor
 
   def validate_user_or_additional
     if index.zero?
-      EmailValidator.new.validate(self)
+      errors.add(:email, 'must be given') unless email.present?
     else
       errors.add(:email, 'must not be given') if email.present?
     end

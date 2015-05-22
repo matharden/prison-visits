@@ -13,7 +13,7 @@ describe Instant::VisitsController do
 
   context "given correct data" do
     let :mock_metrics_logger do
-      MockMetricsLogger.new
+      MetricsLogger.new(true)
     end
 
     before :each do

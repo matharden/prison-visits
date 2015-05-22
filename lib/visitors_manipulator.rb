@@ -26,7 +26,7 @@ module VisitorsManipulator
       !v.valid?
     end.any?
 
-    go_back = !visit.valid?(:visitors_set) || go_back
+    go_back = !visit.valid?(:visitors_set) || !email_validator.validate(visit.visitors[0]) || go_back
 
     if params[:next] == 'Add another visitor'
       if visit.visitors.size < Visit::MAX_VISITORS
@@ -59,5 +59,9 @@ module VisitorsManipulator
       end
     end
     ParamUtils.trim_whitespace_from_values(params.require(:visit).require(:visitor))
+  end
+
+  def email_validator
+    EmailValidator.new(testing: true)
   end
 end

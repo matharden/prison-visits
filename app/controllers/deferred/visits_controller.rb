@@ -5,10 +5,10 @@ class Deferred::VisitsController < ApplicationController
 
   def update
     @token = encryptor.encrypt_and_sign(visit)
-    PrisonMailer.booking_request_email(visit, @token).deliver
-    VisitorMailer.booking_receipt_email(visit, @token).deliver
+    prison_mailer.booking_request_email(visit, @token).deliver
+    visitor_mailer.booking_receipt_email(visit, @token).deliver
 
-    STATSD_CLIENT.increment("pvb.app.visit_request_submitted")
+    statsd_increment("pvb.app.visit_request_submitted")
 
     metrics_logger.record_visit_request(visit)
     redirect_to deferred_show_visit_path(state: @token)
@@ -24,9 +24,5 @@ class Deferred::VisitsController < ApplicationController
 
   def encryptor
     MESSAGE_ENCRYPTOR
-  end
-
-  def metrics_logger
-    METRICS_LOGGER
   end
 end

@@ -8,7 +8,7 @@ class Deferred::ConfirmationsController < ApplicationController
     metrics_logger.record_link_click(booked_visit)
     if metrics_logger.processed?(booked_visit)
       reset_session
-      STATSD_CLIENT.increment('pvb.app.already_booked')
+      statsd_increment('pvb.app.already_booked')
       render '_already_booked'
     end
     if metrics_logger.request_cancelled?(booked_visit)
@@ -18,7 +18,7 @@ class Deferred::ConfirmationsController < ApplicationController
     logstasher_add_visit_id(booked_visit.visit_id)
   rescue ActiveSupport::MessageVerifier::InvalidSignature => e
     render '_bad_state', status: 400
-    STATSD_CLIENT.increment('pvb.app.bad_state')
+    statsd_increment('pvb.app.bad_state')
     Raven.capture_exception(e)
   end
 
@@ -30,16 +30,16 @@ class Deferred::ConfirmationsController < ApplicationController
 
     if @confirmation.slot_selected?
       token = encryptor.encrypt_and_sign(attach_vo_number(remove_unused_slots(booked_visit, @confirmation.slot), @confirmation))
-      VisitorMailer.booking_confirmation_email(booked_visit, @confirmation, token).deliver
-      STATSD_CLIENT.increment("pvb.app.visit_confirmed")
+      visitor_mailer.booking_confirmation_email(booked_visit, @confirmation, token).deliver
+      statsd_increment("pvb.app.visit_confirmed")
       metrics_logger.record_booking_confirmation(booked_visit)
     else
-      VisitorMailer.booking_rejection_email(booked_visit, @confirmation).deliver
-      STATSD_CLIENT.increment("pvb.app.visit_rejected")
+      visitor_mailer.booking_rejection_email(booked_visit, @confirmation).deliver
+      statsd_increment("pvb.app.visit_rejected")
       metrics_logger.record_booking_rejection(booked_visit, @confirmation.outcome)
     end
-    PrisonMailer.booking_receipt_email(booked_visit, @confirmation).deliver
-    STATSD_CLIENT.increment("pvb.app.visit_processed")
+    prison_mailer.booking_receipt_email(booked_visit, @confirmation).deliver
+    statsd_increment("pvb.app.visit_processed")
     redirect_to deferred_show_confirmation_path(visit_id: booked_visit.visit_id)
   end
 
@@ -60,10 +60,6 @@ class Deferred::ConfirmationsController < ApplicationController
     MESSAGE_ENCRYPTOR
   end
 
-  def metrics_logger
-    METRICS_LOGGER
-  end
-
   def legacy_data_fixes(visit)
     if prison_name = {
         'Hollesley Bay' => 'Hollesley Bay Open',
@@ -75,7 +71,7 @@ class Deferred::ConfirmationsController < ApplicationController
         'Hindley (Young Adult 18-21 only)' => 'Hindley',
         'Hindley (Young People 15-18 only)' => 'Hindley'
       }[visit.prisoner.prison_name]
-      STATSD_CLIENT.increment('pvb.app.legacy_data_fixes')
+      statsd_increment('pvb.app.legacy_data_fixes')
       visit.prisoner.prison_name = prison_name
     end
     visit

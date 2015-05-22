@@ -37,4 +37,14 @@ describe Deferred::Visitor do
       v.should be_valid
     end
   end
+
+  it "requires no e-mail for each successive visitor" do
+    subject.tap do |v|
+      v.index = 1
+      v.first_name = 'Jimmy'
+      v.last_name = 'Harris'
+      v.date_of_birth = Date.parse "1984-04-20"
+      v.should be_valid
+    end
+  end
 end

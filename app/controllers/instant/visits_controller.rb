@@ -23,8 +23,4 @@ class Instant::VisitsController < ApplicationController
   def encryptor
     MESSAGE_ENCRYPTOR
   end
-
-  def metrics_logger
-    METRICS_LOGGER
-  end
 end

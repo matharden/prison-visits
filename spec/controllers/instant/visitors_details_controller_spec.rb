@@ -7,7 +7,7 @@ describe Instant::VisitorsDetailsController do
     session[:visit] = PrisonerDetailsController.new.new_session
     controller.visit.prisoner.prison_name = 'Cardiff'
     cookies['cookies-enabled'] = 1
-    EmailValidator.any_instance.stub(:validate)
+    controller.stub(:email_validator => EmailValidator.new(testing: true))
   end
 
   it_behaves_like "a browser without a session present"

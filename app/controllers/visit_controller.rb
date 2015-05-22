@@ -10,7 +10,7 @@ class VisitController < ApplicationController
       encryptor.decrypt_and_verify(params[:state])
       @state = params[:state]
     else
-      STATSD_CLIENT.increment('pvb.app.status_with_no_state')
+      statsd_increment('pvb.app.status_with_no_state')
     end
   end
 
@@ -22,7 +22,7 @@ class VisitController < ApplicationController
       if @visit_status == 'pending'
         metrics_logger.record_booking_cancellation(params[:id], 'request_cancelled')
       else
-        PrisonMailer.booking_cancellation_receipt_email(@visit).deliver
+        prison_mailer.booking_cancellation_receipt_email(@visit).deliver
         metrics_logger.record_booking_cancellation(params[:id], 'visit_cancelled')
       end
     else
@@ -34,9 +34,5 @@ class VisitController < ApplicationController
 
   def encryptor
     MESSAGE_ENCRYPTOR
-  end
-
-  def metrics_logger
-    METRICS_LOGGER
   end
 end
