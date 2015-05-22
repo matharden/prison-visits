@@ -15,6 +15,7 @@ WITH percentiles AS (
                            ORDER BY end_to_end_time)
   FROM visit_metrics_entries
   WHERE end_to_end_time IS NOT NULL
+  AND testing IS FALSE
   AND nomis_id = ? AND EXTRACT(isoyear FROM requested_at) = ?
   ORDER BY fortnight)
 SELECT MIN(DATE_TRUNC('week', requested_at))::date AS x, MIN(end_to_end_time) AS y
@@ -28,6 +29,7 @@ ORDER BY x}, @nomis_id, @year, percentile]
     @model.find_by_sql [%Q{
 SELECT MIN(DATE_TRUNC('week', requested_at))::date AS x, COUNT(*) AS y FROM visit_metrics_entries
 WHERE nomis_id = ? AND EXTRACT(isoyear FROM requested_at) = ?
+AND testing IS FALSE
 GROUP BY EXTRACT(week FROM requested_at)::integer / 2
 ORDER BY x
 }, @nomis_id, @year]

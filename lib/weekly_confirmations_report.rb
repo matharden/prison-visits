@@ -4,7 +4,7 @@ class WeeklyConfirmationsReport
   attr_reader :total
   
   def initialize(model, year, start_of_year, prison_labeling_function)
-    @model = model
+    @model = model.where(testing: false)
     @year = year
     @start_of_year = start_of_year
     @prison_labeling_function = prison_labeling_function.bind(self)
@@ -32,6 +32,7 @@ SELECT nomis_id,
 FROM visit_metrics_entries
 WHERE processed_at IS NOT NULL AND EXTRACT(isoyear FROM processed_at) = ?
 AND outcome = 'confirmed'
+AND testing IS FALSE
 GROUP BY nomis_id, EXTRACT(week FROM processed_at) ORDER BY nomis_id, weekno}, @year])
     .inject(hash_with_default) do |h, row|
 
@@ -51,6 +52,7 @@ SELECT EXTRACT(week FROM processed_at) AS weekno, COUNT(*)
 FROM visit_metrics_entries
 WHERE processed_at IS NOT NULL AND EXTRACT(isoyear FROM processed_at) = ?
 AND outcome = 'confirmed'
+AND testing IS FALSE
 GROUP BY weekno ORDER BY weekno}, @year]).inject(Array.new(52, 0)) do |arr, row|
       arr[row['weekno'].to_i] = row['count'].to_i
       arr

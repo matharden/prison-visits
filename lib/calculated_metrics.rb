@@ -4,7 +4,7 @@ class CalculatedMetrics
   attr_reader :total_visits, :waiting_visits, :overdue_visits, :confirmed_visits, :rejected_visits, :rejected_for_reason, :end_to_end_median_times, :end_to_end_times, :processing_times
 
   def initialize(model, overdue_threshold, date_range=nil)
-    @model = model
+    @model = model.where(testing: false)
     @overdue_threshold = overdue_threshold
     @date_range = date_range
 
@@ -62,6 +62,7 @@ class CalculatedMetrics
     @model.find_by_sql [%Q{
 WITH percentiles AS (SELECT nomis_id, ?, cume_dist() OVER (PARTITION BY nomis_id ORDER BY ?) AS percentile
                      FROM visit_metrics_entries WHERE ? IS NOT NULL
+                     AND testing IS FALSE
                      AND requested_at > ?::date
                      AND processed_at <= ?::date),
      top_percentiles AS (SELECT nomis_id, ?, rank() OVER (PARTITION BY nomis_id ORDER BY ?)
@@ -73,7 +74,8 @@ SELECT nomis_id, ? FROM top_percentiles WHERE rank = 1
   def calculate_percentiles_without_date_range(column, percentile)
     @model.find_by_sql [%Q{
 WITH percentiles AS (SELECT nomis_id, ?, cume_dist() OVER (PARTITION BY nomis_id ORDER BY ?) AS percentile
-                     FROM visit_metrics_entries WHERE ? IS NOT NULL),
+                     FROM visit_metrics_entries WHERE ? IS NOT NULL
+                     AND testing IS FALSE),
      top_percentiles AS (SELECT nomis_id, ?, rank() OVER (PARTITION BY nomis_id ORDER BY ?)
                      FROM percentiles WHERE percentile >= ?)
 SELECT nomis_id, ? FROM top_percentiles WHERE rank = 1

@@ -4,7 +4,7 @@ class DetailedMetrics
   THREE_DAYS = 3 * 24 * 3600
 
   def initialize(model, nomis_id)
-    @scoped_model = model.for_nomis_id(nomis_id)
+    @scoped_model = model.for_nomis_id(nomis_id).where(testing: false)
   end
 
   def processed_before(interval=THREE_DAYS)
