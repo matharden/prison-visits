@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150429100538) do
+ActiveRecord::Schema.define(version: 20150515155538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20150429100538) do
     t.integer  "processing_time"
     t.integer  "end_to_end_time"
     t.string   "kind"
+    t.boolean  "testing",         default: false
   end
 
   add_index "visit_metrics_entries", ["nomis_id"], name: "index_visit_metrics_entries_on_nomis_id", using: :btree

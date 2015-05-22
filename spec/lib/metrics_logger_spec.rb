@@ -10,6 +10,10 @@ describe MetricsLogger do
     Timecop.return
   end
 
+  subject do
+    MetricsLogger.new(false)
+  end
+
   it "logs a visit request" do
     expect {
       subject.record_visit_request(sample_visit)

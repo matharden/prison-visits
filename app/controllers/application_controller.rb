@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   helper_method :visit
+  helper_method :smoke_testing?
   before_filter :add_extra_sentry_metadata
 
   def self.permit_only_from_prisons
@@ -45,6 +46,26 @@ class ApplicationController < ActionController::Base
         Raven.extra_context(prison: prison)
       end
     end
+  end
+
+  def smoke_testing?
+    ENV['SMOKE_TESTING_KEY'].secure_compare(request.headers['Smoke-Test'])
+  end
+
+  def statsd_increment(counter)
+    STATSD_CLIENT.increment(counter) unless smoke_testing?
+  end
+
+  def prison_mailer
+    smoke_testing? ? SmokeTestPrisonMailer : PrisonMailer
+  end
+
+  def visitor_mailer
+    smoke_testing? ? SmokeTestVisitorMailer : VisitorMailer
+  end
+
+  def metrics_logger
+    MetricsLogger.new(smoke_testing?)
   end
 
   def request_id
