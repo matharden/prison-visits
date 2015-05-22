@@ -35,6 +35,10 @@ describe Deferred::ConfirmationsController do
     MESSAGE_ENCRYPTOR.encrypt_and_sign(legacy_visit)
   end
 
+  before :each do
+    controller.stub(smoke_testing?: false)
+  end
+
   context "in correct IP range" do
     context "before interaction" do
       before :each do

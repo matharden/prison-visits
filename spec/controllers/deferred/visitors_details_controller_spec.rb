@@ -9,6 +9,7 @@ describe Deferred::VisitorsDetailsController do
     cookies['cookies-enabled'] = 1
     controller.stub(email_validator: EmailValidator.new(testing: true))
     controller.stub(metrics_logger: MetricsLogger.new(true))
+    controller.stub(smoke_testing?: false)
   end
 
   it_behaves_like "a browser without a session present"

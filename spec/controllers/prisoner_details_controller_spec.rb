@@ -20,6 +20,10 @@ describe PrisonerDetailsController do
   it_behaves_like "a browser without a session present"
   it_behaves_like "a session timed out"
 
+  before :each do
+    controller.stub(smoke_testing?: false)
+  end
+
   context "always" do
     it "creates a new session" do
       controller.new_session.tap do |visit|

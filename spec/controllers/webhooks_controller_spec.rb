@@ -55,6 +55,7 @@ describe WebhooksController do
 
   before :each do
     ActionMailer::Base.deliveries.clear
+    controller.stub(smoke_testing?: false)
   end
 
   context "when a valid e-mail webhook comes in" do

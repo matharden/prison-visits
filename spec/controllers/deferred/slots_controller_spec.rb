@@ -7,6 +7,7 @@ describe Deferred::SlotsController do
     Timecop.freeze(Time.local(2013, 12, 1, 12, 0))
     session[:visit] = Visit.new(visit_id: SecureRandom.hex, prisoner: Prisoner.new, visitors: [Visitor.new], slots: [])
     cookies['cookies-enabled'] = 1
+    controller.stub(smoke_testing?: false)
   end
 
   after :each do

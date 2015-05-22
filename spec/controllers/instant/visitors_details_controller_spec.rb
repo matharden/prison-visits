@@ -8,6 +8,7 @@ describe Instant::VisitorsDetailsController do
     controller.visit.prisoner.prison_name = 'Cardiff'
     cookies['cookies-enabled'] = 1
     controller.stub(:email_validator => EmailValidator.new(testing: true))
+    controller.stub(smoke_testing?: false)
   end
 
   it_behaves_like "a browser without a session present"

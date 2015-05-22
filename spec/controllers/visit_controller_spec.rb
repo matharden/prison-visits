@@ -7,6 +7,7 @@ describe VisitController do
     ActionMailer::Base.deliveries.clear
     controller.stub(:service_domain => 'lol.biz.info')
     controller.stub(:metrics_logger => MetricsLogger.new(true))
+    controller.stub(smoke_testing?: false)
     request.stub(:ssl? => true)
   end
 

@@ -5,6 +5,7 @@ describe Instant::VisitsController do
 
   before :each do
     cookies['cookies-enabled'] = 1
+    controller.stub(smoke_testing?: false)
   end
 
   it_behaves_like "a browser without a session present"

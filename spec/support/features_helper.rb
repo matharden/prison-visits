@@ -51,4 +51,8 @@ end
 
 shared_examples "feature helper" do
   include FeaturesHelper
+
+  before :each do
+    ApplicationController.any_instance.stub(smoke_testing?: false)
+  end
 end
