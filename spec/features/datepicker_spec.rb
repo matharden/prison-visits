@@ -7,7 +7,6 @@ feature "visitor selects a date" do
     context "#{flow} flow" do
 
       before :each do
-        VisitController.any_instance.stub(:metrics_logger).and_return(MockMetricsLogger.new)
         EmailValidator.any_instance.stub(:validate_dns_records)
         EmailValidator.any_instance.stub(:validate_spam_reporter)
         EmailValidator.any_instance.stub(:validate_bounced)

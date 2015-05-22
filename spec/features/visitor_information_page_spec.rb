@@ -7,9 +7,7 @@ feature "visitor enters visitor information" do
     context "#{flow} flow" do
 
       before :each do
-        EmailValidator.any_instance.stub(:validate_dns_records)
-        EmailValidator.any_instance.stub(:validate_spam_reporter)
-        EmailValidator.any_instance.stub(:validate_bounced)
+        ApplicationController.any_instance.stub(email_validator: EmailValidator.new(testing: true))
         visit '/prisoner-details'
         enter_prisoner_information(flow)
       end
@@ -32,11 +30,6 @@ feature "visitor enters visitor information" do
       end
 
       context "and they fill out all fields" do
-        before :each do
-          EmailValidator.any_instance.stub(:validate)
-          EmailValidator.any_instance.stub(:validate)
-        end
-
         context "for one visitor" do
           it "displays the calendar" do
             enter_visitor_information(flow)
