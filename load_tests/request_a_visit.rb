@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 require 'ruby-jmeter'
 
+def extract_authenticity_token
+  extract name: 'csrf_token', regex: 'meta content="([^"]+)" name="csrf-token"'
+end
+
 test do
   defaults domain: 'preprod-prisonvisits.dsd.io', protocol: 'https', port: 443
   cookies policy: 'rfc2109', clear_each_iteration: true
+  header name: 'Smoke-Test', value: ENV['SMOKE_TESTING_KEY']
   cache
 
-  threads count: 2 do
+  threads count: 10 do
     visit '/prisoner' do
-      extract name: 'csrf_token', regex: 'meta content="(.+?)" name="csrf-token"'
+      extract_authenticity_token
     end
 
     submit '/prisoner', {
@@ -27,7 +32,7 @@ test do
     }
 
     visit '/deferred/visitors' do
-      extract name: 'csrf_token', regex: 'meta content="(.+?)" name="csrf-token"'
+      extract_authenticity_token
     end
     
     submit '/deferred/visitors', {
@@ -46,18 +51,33 @@ test do
     }
 
     visit '/deferred/slots' do
-      extract name: 'csrf_token', regex: 'meta content="(.+?)" name="csrf-token"'
+      extract_authenticity_token
+      extract name: 'slot1_name', xpath: '//input[@class=SlotPicker-slot and position() = 1]/@value'
+      extract name: 'slot2_name', xpath: '//input[@class=SlotPicker-slot and position() = 2]/@value'
+      extract name: 'slot3_name', xpath: '//input[@class=SlotPicker-slot and position() = 3]/@value'
     end
 
     submit '/deferred/slots', {
       fill_in: {
         'utf8' => '✓',
         'authenticity_token' => '${csrf_token}',
-        'visit[slots][][slot]' => 'lol',
-        'visit[slots][][slot]' => 'lol',
-        'visit[slots][][slot]' => 'lol',
+        'visit[slots][][slot]' => '${slot1_name}',
+        'visit[slots][][slot]' => '${slot2_name}',
+        'visit[slots][][slot]' => '${slot3_name}',
         'next' => 'Continue'
+      }
+    }
+
+    visit '/deferred/visit' do
+      extract_authenticity_token
+    end
+
+    submit '/deferred/visit', {
+      fill_in: {
+        authenticity_token: '${csrf_token}'
       }
     }
   end
 end.jmx
+
+
