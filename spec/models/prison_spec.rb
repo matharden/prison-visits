@@ -159,13 +159,13 @@ RSpec.describe Prison, type: :model do
   describe '.works_weekends?' do
     context 'when a prison has a works weekends boolean flag set' do
       it 'returns that boolean' do
-        expect(subject.works_weekends?).to be_truthy
+        expect(subject.works_weekends?).to be true
       end
     end
     context 'when no works weekends boolean flag has been set' do
       subject { constructor_for mock_prison_data.except 'works_weekends' }
 
-      specify { expect(subject.works_weekends?).to be_falsey }
+      specify { expect(subject.works_weekends?).to be false }
     end
   end
 
