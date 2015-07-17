@@ -90,9 +90,20 @@ RSpec.describe Prison, type: :model do
   end
 
   describe '.visiting_slot_days' do
-    let(:expected_slot_days) { %w<mon tue wed thu fri sat sun> }
-    it 'returns the abbreviated day names of available visiting days' do
-      expect(subject.visiting_slot_days).to eq expected_slot_days
+    let(:prison_with_everyday_visits) { subject }
+    let(:expected_slot_days_for_everyday_visits) { %w<mon tue wed thu fri sat sun> }
+
+    let(:weekend_slots_data) {  { "sat"=>["0930-1130"], "sun"=>["1400-1600"] } }
+    let(:expected_slot_days_for_weekend_only_visits) { %w<sat sun> }
+    let(:prison_with_weekend_only_visists) {
+      constructor_for mock_prison_data.replace('slots' => weekend_slots_data)
+    }
+
+    it 'returns the abbreviated day names of available visiting days for the prison' do
+      expect(prison_with_everyday_visits.visiting_slot_days).
+        to eq expected_slot_days_for_everyday_visits
+      expect(prison_with_weekend_only_visists.visiting_slot_days).
+        to eq expected_slot_days_for_weekend_only_visits
     end
   end
 
