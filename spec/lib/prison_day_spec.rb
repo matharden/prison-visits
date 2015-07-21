@@ -51,7 +51,7 @@ RSpec.describe PrisonDay do
     end
   end
 
-  describe '.staff_working_day?' do
+  describe '#staff_working_day?' do
     context 'on a regular weekday' do
       WEEKDAYS.each do |day_name, date|
         subject { described_class.new(date, prison_from(prison_data)) }
@@ -86,7 +86,7 @@ RSpec.describe PrisonDay do
     end
   end
 
-  describe '.visiting_day?' do
+  describe '#visiting_day?' do
     let(:prison_with_visits_except_thursday) do
       prison_from prison_data.replace(slots: slots_for_everyday.except("thu"))
     end
