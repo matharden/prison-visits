@@ -85,7 +85,7 @@ RSpec.describe VisitHelper, type: :helper do
 
     it "provides a formatted date for when a response may be sent out" do
       Timecop.travel(Date.parse("2014-10-03")) do
-        expect(helper.when_to_expect_reply).to eq("Friday  3 October")
+        expect(helper.when_to_expect_reply).to eq("Monday  6 October")
       end
     end
   end
