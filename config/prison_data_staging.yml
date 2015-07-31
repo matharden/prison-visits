@@ -3441,9 +3441,6 @@ Altcourse:
 Ashfield:
   nomis_id: ASI
   enabled: false
-Belmarsh:
-  nomis_id: BAI
-  enabled: false
 Birmingham:
   nomis_id: BMI
   enabled: false
