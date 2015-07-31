@@ -1,4 +1,35 @@
 ---
+Belmarsh:
+  nomis_id:BAI
+  canned_responses: true
+  enabled: true
+  phone: 0208 3314768
+  email: pvb.belmarsh@maildrop.dsd.io
+  instant_booking: false
+  address:
+  - Western Way
+  - Thamesmead
+  - London
+  - SE28 0EB
+  lead_days: 3
+  unbookable:
+  - 2015-12-25
+  - 2015-12-26
+  slots:
+    tue:
+    - 0930-1100
+    wed:
+    - 0930-1100
+    - 1430-1600
+    thu:
+    - 0930-1100
+    - 1430-1600
+    fri:
+    - 0900-1030
+    sat:
+    - 1430-1600
+    sun:
+    - 1430-1600
 Rochester:
   nomis_id: RCI
   canned_responses: true
