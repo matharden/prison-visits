@@ -1,6 +1,6 @@
 ---
 Belmarsh:
-  nomis_id:BAI
+  nomis_id: BAI
   canned_responses: true
   enabled: true
   phone: 0208 3314768
