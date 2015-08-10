@@ -64,10 +64,7 @@
               %dd= format_date date
 
       %h2 ID requirements
-      - if requirements = custom_id_requirements(params['prison'].titleize, :html)
-        = requirements
-      - else
-        = standard_id_requirements(:html)
+      = prison_specific_id_requirements params['prison'].titleize
 
       = render 'content/visiting_guidance', visit: Visit.new(prisoner: Prisoner.new(prison_name: params['prison'].titleize))
 
@@ -92,7 +89,7 @@
             %dd= @data['finder_slug']
 
           %dt Booking response
-          %dd= @data['lead_days'] ? @data['lead_days'] : Schedule::DEFAULT_LEAD_DAYS.to_s + ' days'
+          %dd= @data['lead_days'] ? @data['lead_days'] : Prison::DEFAULT_LEAD_DAYS.to_s + ' days'
 
           - if @data['works_weekends']
             %dt Process visits on weekends
