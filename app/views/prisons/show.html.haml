@@ -46,7 +46,7 @@
                   - else
                     none
 
-        - if @data['slot_anomalies']
+        - if @data['slot_anomalies'].sort.last[0] > Date.today
           %dt Non-standard visiting times
           %dd
             %dl
@@ -57,7 +57,7 @@
                     - slots.each do |slot|
                       %li= display_time_slot slot
 
-        - if @data['unbookable']
+        - if @data['unbookable'].sort.last > Date.today
           %dt Scheduled non-visit days
           - @data['unbookable'].each do |date|
             - if date > Date.today
